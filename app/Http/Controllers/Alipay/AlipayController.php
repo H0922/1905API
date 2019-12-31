@@ -64,6 +64,7 @@ class AlipayController extends Controller
         $priKey = file_get_contents($key);
         $res = openssl_get_privatekey($priKey);
         openssl_sign($str, $sign, $res, OPENSSL_ALGO_SHA256);
+        // dd($res);
         $sign = base64_encode($sign);
         $param['sign'] = $sign;
         $param_str = '?';
