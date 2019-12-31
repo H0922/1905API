@@ -14,3 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
+//支付
+Route::get('alipay/pay','Alipay\AlipayController@alipay');
+//同步
+Route::get('alipay/return','Alipay\AlipayController@return');
+
+
