@@ -21,5 +21,8 @@ Route::get('/phpinfo', function () {
 Route::get('alipay/pay','Alipay\AlipayController@alipay');
 //同步
 Route::get('alipay/return','Alipay\AlipayController@return');
+//异步
+Route::get('alipay/notify','Alipay\AlipayController@notify');
+
 
 
