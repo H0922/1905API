@@ -23,6 +23,11 @@ Route::get('alipay/pay','Alipay\AlipayController@alipay');
 Route::get('alipay/return','Alipay\AlipayController@return');
 //异步
 Route::post('alipay/notify','Alipay\AlipayController@notify');
-
+//注册
+Route::post('alipay/create','Alipay\AlipayController@create');
+//登录
+Route::post('alipay/login','Alipay\AlipayController@login');
+//访问记录
+Route::get('alipay/userlist','Alipay\AlipayController@userlist')->middleware('UserList');
 
 

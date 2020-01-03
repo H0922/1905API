@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Alipay;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Model\ApiUserModel;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redis;
 class AlipayController extends Controller
 {
    public function alipay()
@@ -139,6 +141,80 @@ class AlipayController extends Controller
         openssl_free_key($res);
         var_dump($result);
         return $result;
+    }
+
+
+    //注册
+    public function create(){
+        $pass1=request()->input('pass1');
+        $pass2=request()->input('pass2');
+        if($pass1 != $pass2){
+            $json=[
+                'errno'=>1006,
+                'msg'=>'两次密码不一致'
+            ];
+            return $json;
+        }
+        $user_name=ApiUserModel::where('user_name','=',request()->input('user_name'))->value('user_name');
+        if(request()->input('user_name') == $user_name ){
+            $json=[
+                'errno'=>1011,
+                'msg'=>'用户名已存在'
+            ];
+            return $json;
+        }
+        $password=password_hash($pass1,PASSWORD_BCRYPT);
+        $data=[
+            'user_name'=>request()->input('user_name'),
+            'user_password'=>$password,
+            'user_emai'=>request()->input('user_emai'),
+            'last_login'=>time(),
+            'last_ip'=>$_SERVER['REMOTE_ADDR'],
+        ];
+        // dd($data);
+        $userid=ApiUserModel::insertGetId($data);
+        dump($userid);
+    }
+    //登录
+    public function login(){
+        $name=request()->input('user_name');
+        $paw=request()->input('user_password');
+        $data=ApiUserModel::where('user_name','=',$name)->first();
+        if($data){
+            $pas=password_verify($paw,$data->user_password);
+           if($pas){
+                $token=Str::random(32);
+                $json=[
+                    'errno'=>0,
+                    'msg'=>'ok',
+                    'data'=>[
+                        'token'=>$token
+                    ]
+                ];
+           }else{
+               $json=[
+                   'errno'=>1001,
+                   'msg'=>'密码不正确'
+               ];
+           }
+        }else{
+        $json=[
+            'errno'=>1002,
+            'msg'=>'用户名不存在'
+        ];
+        }
+        return $json;
+    }
+
+    //浏览记录
+    public function userlist(){
+        // dump($_SERVER);
+        $reuqest_url=md5($_SERVER['REQUEST_URI']);
+        $token=$_SERVER['HTTP_TOKEN'];
+        $key='str:count:u:'.$token.':url:'.$reuqest_url; 
+        $count=Redis::incr($key);   
+        echo '浏览次数'.$count;  
+        
     }
 
 }
