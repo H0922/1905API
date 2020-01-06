@@ -30,4 +30,6 @@ Route::post('alipay/login','Alipay\AlipayController@login');
 //访问记录
 Route::get('alipay/userlist','Alipay\AlipayController@userlist')->middleware('UserList');
 
+Route::get('jia','Alipay\AlipayController@jia');
+
 

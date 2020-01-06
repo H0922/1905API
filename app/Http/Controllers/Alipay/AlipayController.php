@@ -217,4 +217,36 @@ class AlipayController extends Controller
         
     }
 
+
+
+    //加密 
+    public function  jia(){
+        $str='huangxiaobo';
+        
+        echo '原始>>>>>'.$str;
+        echo '<hr>';
+        $strlen=strlen($str);
+        $jia="";
+        for($i=0;$i<$strlen;$i++){
+            // echo $i;
+        //    echo ord($str[$i])+3;echo '<br>';\
+            //十进制加密
+            $q=ord($str[$i])+1;
+            // echo chr($q);echo '<br>';
+            $a=chr($q);
+            $jia.=$a;
+
+        }
+        echo '加密后>>>>>'.$jia;
+        echo '<hr>';
+        $jilen=strlen($jia);
+        $j="";
+        for($i=0;$i<$jilen;$i++){
+            $b=ord($jia[$i])-1;
+            $s=chr($b);
+            $j.=$s;
+        }
+        echo '解密后>>>>>'.$j;
+    }
+
 }
