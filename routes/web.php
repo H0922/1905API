@@ -32,4 +32,11 @@ Route::get('alipay/userlist','Alipay\AlipayController@userlist')->middleware('Us
 
 Route::get('jia','Alipay\AlipayController@jia');
 
+Route::get('keys/create','Keys\PubController@addpub');
+Route::post('keys/insert','Keys\PubController@create');
+Route::post('keys/keyss','Keys\PubController@keyss');
+Route::get('keys/lists','Keys\PubController@lists');
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
