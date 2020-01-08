@@ -18,6 +18,7 @@
                     <br>
                     <a href="{{url('keys/create')}}">添加公钥</a>
                     <a href="{{url('keys/lists')}}">解密数据</a>
+                    <a href="{{url('keys/sign')}}">自动验签</a>
                 </div>
             </div>
         </div>

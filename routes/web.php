@@ -36,7 +36,8 @@ Route::get('keys/create','Keys\PubController@addpub');
 Route::post('keys/insert','Keys\PubController@create');
 Route::post('keys/keyss','Keys\PubController@keyss');
 Route::get('keys/lists','Keys\PubController@lists');
-
+Route::get('keys/sign','Keys\PubController@sign');
+Route::post('keys/signcre','Keys\PubController@signcre');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

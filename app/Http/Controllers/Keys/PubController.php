@@ -57,4 +57,44 @@ class PubController extends Controller
       openssl_public_decrypt($bsae,$data,$pubkey);  
       echo '解密后的数据：'. $data;
     }
+
+    public function sign(){
+      return view('keys.sgin');
+    }
+    
+    public function signcre(){
+        $data=$_POST;
+        $sign=$data['sign'];
+        $sign=base64_decode($sign);
+        dump($sign);
+        unset($data['sign']);
+        unset($data['_token']);
+        // ksort($data);
+        $params = [];
+        foreach ($_POST['k'] as $k=>$v)
+        {
+            if(empty($v)){
+                continue;       //跳过空字段
+            }
+            
+            $params[$v] = $_POST['v'][$k];
+        }
+       ksort($params);
+       dump($params);
+       $str="";
+       foreach($params as $k=>$v){
+            $str.=$k.'='.$v.'&';
+       }
+       $str=rtrim($str,'&');
+       echo $str;
+       $id=Auth::id();
+       $pubkey=Pub::where('user_id','=',$id)->value('pub_key');
+       $r=openssl_verify($str,$sign,$pubkey,OPENSSL_ALGO_SHA256);
+       if($r){
+            echo '验签成功';
+       }else{
+            echo '验签失败';
+       }
+  
+    }
 }
