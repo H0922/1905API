@@ -76,7 +76,6 @@ class PubController extends Controller
             if(empty($v)){
                 continue;       //跳过空字段
             }
-            
             $params[$v] = $_POST['v'][$k];
         }
        ksort($params);
@@ -87,14 +86,14 @@ class PubController extends Controller
        }
        $str=rtrim($str,'&');
        echo $str;
+       echo '<hr>';
        $id=Auth::id();
        $pubkey=Pub::where('user_id','=',$id)->value('pub_key');
        $r=openssl_verify($str,$sign,$pubkey,OPENSSL_ALGO_SHA256);
        if($r){
-            echo '验签成功';
+            echo '验签成功,您的签名可以正常使用';
        }else{
             echo '验签失败';
        }
-  
     }
 }
